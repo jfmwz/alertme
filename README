@@ -1,0 +1,9 @@
+A Shell Application using Scala Play! 1.2.3 
+
+- Stateless Architecture storing sessions on Redis as JSON
+
+- Sessions stored in Redis keystore using Lift-Json
+
+- Squeryl DB Access to PostgreSQL
+
+- Data caching layer using Redis (to do)
