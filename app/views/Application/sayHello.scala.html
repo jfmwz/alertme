@@ -1,0 +1,10 @@
+@(name:String)
+
+@main(title = "Hello") {
+
+    <h1>Hello @(name ?: "Guest")!</h1>
+    <br>
+
+    <a href="@action(controllers.Application.index)">Back to form</a>
+
+}
