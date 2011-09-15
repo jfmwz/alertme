@@ -1,4 +1,4 @@
-A Shell Application using Scala Play! 1.2.3 
+Application using Scala Play! 1.2.3 
 
 - Stateless Architecture storing sessions on Redis as JSON
 
