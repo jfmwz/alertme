@@ -2,19 +2,8 @@ package session
 
 import com.redis.cluster.RedisCluster
 import com.redis._
-
-import scala.collection.JavaConversions._
-import java.lang.reflect.Constructor
-import play.classloading.enhancers.LocalvariablesNamesEnhancer
 import net.liftweb.json._
-import net.liftweb.json.JsonAST
-import net.liftweb.json.JsonDSL._
-
-
-object PlayParameterNameReader extends ParameterNameReader {
-    def lookupParameterNames(constructor: Constructor[_]) =
-        LocalvariablesNamesEnhancer.lookupParameterNames(constructor)
-}
+import util.PlayParameterNameReader
 
 
 object SessionStore {
@@ -24,7 +13,6 @@ object SessionStore {
   implicit val formats = new DefaultFormats {
     override val parameterNameReader = PlayParameterNameReader
   }
-
 
   def setSession(sId: String, userSession: UserSession) = {
     val jsonValue =  Extraction.decompose(userSession)

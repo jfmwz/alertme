@@ -30,7 +30,15 @@ object Application extends Controller {
     val name = params.get("myName")
 
     val userService = new UserService()
-    userService.createUser(util.IDGenerator.generateUUIDLeastSig, name)
+    userService.createUserAndCache(util.IDGenerator.generateUUIDLeastSig, name)
+
+    val user1 = userService.getUser(name);
+
+    println("Got user : " + user1.getName())
+
+    val user2 = userService.getUser(name);
+
+    println("Got user again : " + user2.getName())
 
     html.sayHello(name)
   }
