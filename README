@@ -6,4 +6,8 @@ Application using Scala Play! 1.2.3
 
 - Squeryl DB Access to PostgreSQL
 
-- Data caching layer using Redis (to do)
+- Data caching layer using Redis
+
+
+Using Redis scala client code in the com.redis package developed by debasishg
+Located at https://github.com/debasishg/scala-redis
