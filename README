@@ -8,6 +8,8 @@ Application using Scala Play! 1.2.3
 
 - Data caching layer using Redis
 
+- Using Akka 1.0 Actor model to handle specific tasks in Controller
+
 
 Using Redis scala client code in the com.redis package developed by debasishg
 Located at https://github.com/debasishg/scala-redis
