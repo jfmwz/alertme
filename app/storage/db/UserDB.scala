@@ -7,7 +7,7 @@ import org.squeryl.Schema
 import org.squeryl.annotations.Column
 
 
-class User(val id: Long, val name: String) {
+case class User(val id: Long, val name: String) {
 
   def this() = this(0L, "")
 

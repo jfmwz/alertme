@@ -4,10 +4,15 @@ import play.mvc._
 import session.{UserSession, SessionStore}
 import service._
 import util.IDGenerator
+import akka.actor.Actor
+import storage.db.User
 
 
 object Application extends Controller {
   import views.Application._
+
+  val userService = Actor.actorOf[UserService]
+  userService.start()
 
   def index = {
     val userSession = SessionStore.getSession(this.session.getId)
@@ -29,16 +34,22 @@ object Application extends Controller {
   def sayHello = {
     val name = params.get("myName")
 
-    val userService = new UserService()
-    userService.createUserAndCache(util.IDGenerator.generateUUIDLeastSig, name)
+    val userCreatedFuture = userService !!! UserCreation(util.IDGenerator.generateUUIDLeastSig, name)    //  in akka 1.2 use ? instead of !!!
+    userCreatedFuture.await
 
-    val user1 = userService.getUser(name);
+    val userGetFuture1 = userService !!! UserRetrieval(name)
+    userGetFuture1.await
+    userGetFuture1.result.asInstanceOf[Option[User]] match{
+      case Some(res)=> println("Got user : " + res.getName())
+      case None => println("No user returned")
+    }
 
-    println("Got user : " + user1.getName())
-
-    val user2 = userService.getUser(name);
-
-    println("Got user again : " + user2.getName())
+    val userGetFuture2 = userService !!! UserRetrieval(name)
+    userGetFuture2.await
+    userGetFuture2.result.asInstanceOf[Option[User]] match{
+      case Some(res)=> println("Got user : " + res.getName())
+      case None => println("No user returned")
+    }
 
     html.sayHello(name)
   }

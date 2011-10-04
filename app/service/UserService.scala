@@ -4,13 +4,30 @@ import storage.db.{User, UserDao}
 import net.liftweb.json._
 import util.PlayParameterNameReader
 import com.redis.RedisClient
+import akka.actor.Actor
 
-class UserService {
+
+case class UserCreation(id: Long, name: String)
+case class UserRetrieval(name: String)
+
+
+class UserService extends Actor {
 
   val dbMemoryCache = new RedisClient("localhost", 6379)
 
   implicit val formats = new DefaultFormats {
     override val parameterNameReader = PlayParameterNameReader
+  }
+
+  def receive = {
+    case c:UserCreation => {
+      createUserAndCache(c.id, c.name)
+      self.reply()
+    }
+    case u:UserRetrieval => {
+      val userRes = getUser(u.name)
+      self.reply(userRes)
+    }
   }
 
   def convertUserToJson(user: User): String = {
