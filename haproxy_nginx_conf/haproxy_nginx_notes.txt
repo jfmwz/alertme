@@ -1,0 +1,27 @@
+NGINX
+start:
+sudo /usr/sbin/nginx
+
+stop:
+sudo /usr/sbin/nginx -s stop
+OR
+ps aux | grep -i nginx
+kill -HUP <proc_id>
+
+ when nginx receives the HUP signal, it tries to parse the configuration file (the specified one, if present, otherwise the default), and if successful, tries to apply a new configuration (i.e. re-open the log files and listen sockets). If successful, nginx runs new worker processes and signals graceful shutdown to old workers. Notified workers close listen sockets but continue to serve current clients. After serving all clients old workers shutdown. If nginx wasn't successful in applying the new configuration, it continues to work with an old configuration.
+
+config:
+/etc/nginx/nginx.conf
+
+=======================================
+
+HAPROXY
+start:
+sudo /usr/sbin/haproxy -f /etc/haproxy/haproxy.cfg 
+
+config:
+/etc/haproxy/haproxy.conf
+
+
+Static html file accessed in Play Server via Nginx:
+http://127.0.0.1:8080/public/html/health_check.html
