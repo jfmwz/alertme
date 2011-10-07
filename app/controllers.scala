@@ -34,7 +34,7 @@ object Application extends Controller {
   def sayHello = {
     val name = params.get("myName")
 
-    val userCreatedFuture = userService !!! UserCreation(util.IDGenerator.generateUUIDLeastSig, name)    //  in akka 1.2 use ? instead of !!!
+    val userCreatedFuture = userService !!! UserCreation(util.IDGenerator.generateUUIDLeastSig, name)
     userCreatedFuture.await
 
     val userGetFuture1 = userService !!! UserRetrieval(name)
@@ -50,6 +50,24 @@ object Application extends Controller {
       case Some(res)=> println("Got user : " + res.getName())
       case None => println("No user returned")
     }
+
+    html.sayHello(name)
+  }
+
+
+  def sayHelloSimple = {
+    val name = params.get("myName")
+
+    val userServiceSimple = new UserService()
+    userServiceSimple.createUserAndCache(util.IDGenerator.generateUUIDLeastSig, name)
+
+    val user1 = userServiceSimple.getUser(name);
+
+    println("Got user : " + user1.getName())
+
+    val user2 = userServiceSimple.getUser(name);
+
+    println("Got user again : " + user2.getName())
 
     html.sayHello(name)
   }
