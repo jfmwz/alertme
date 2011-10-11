@@ -55,6 +55,19 @@ object Application extends Controller {
   }
 
 
+  def findUserAsJson = {
+    val name = params.get("userName")
+    val otherParam = params.get("otherParam")
+
+    val userGetFuture3 = userService !!! UserRetrieval(name)
+    userGetFuture3.await
+    userGetFuture3.result.asInstanceOf[Option[User]] match{
+      case Some(aUser)=> Json(aUser)
+      case None => Json("No user returned")
+    }
+  }
+
+
   def sayHelloSimple = {
     val name = params.get("myName")
 
